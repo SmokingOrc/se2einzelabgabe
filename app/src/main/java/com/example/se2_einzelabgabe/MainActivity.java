@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import java.lang.Integer;
 import java.io.*;
 import java.net.Socket;
@@ -13,55 +15,48 @@ import java.net.Socket;
 public class MainActivity extends AppCompatActivity {
 cSocket s;
 EditText matnr;
-EditText Serveranswer, outputt ;
+TextView Serveranswer, outputt ;
 Integer out;
 String sentence;
 String modsentence;
 String manr, output;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    public void onClick(View v){
+
+    public void onClick(View v){ //Einlesen der MatNr
         matnr = this.findViewById(R.id.matnr);
         Serveranswer= this.findViewById(R.id.serveranswer);
 
         manr=matnr.getText().toString();
-
+        calculate(v);
 
         s = new cSocket();
         new Thread(s).start();
     }
-    public void calculate(){
+    public void calculate(View v){/*MultiplizierenSie dieIndizesder Matrikelnummer an deren Position
+     gerade Ziffern stehenund
+     geben Sie das Produkt aus*/
         matnr = this.findViewById(R.id.matnr);
         outputt=this.findViewById(R.id.Output);
 
-        output=outputt.getText().toString();
-        out =Integer.parseInt(output);
-        out= out%9;
-        switch(out) {
-            case 1:
-                outputt.setText(("Ist Primzahl");
-                break;
-            case 2:
-                outputt.setText(("Ist Primzahl");
-                break;
-            case 5:
-                outputt.setText(("Ist Primzahl");
-                break;
-            case 7:
-                outputt.setText(("Ist Primzahl");
-                break;
-
-            default:
-                outputt.setText("ist keine Primzahl");
+        output=manr;
+        out=1;
+        for (int i = 0; i < output.length(); i++) {
+            if (output.charAt(i) % 2 == 0) {
+                out = out * (i + 1);
+            }
         }
+        outputt.setText(out.toString());
+
     }
 
 
-class cSocket implements Runnable{
+class cSocket implements Runnable{// Verbindungsaufbau zum Server
     Socket s;
     @Override
     public void run(){
